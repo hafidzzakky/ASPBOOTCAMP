@@ -1,0 +1,71 @@
+﻿@model kredit.Models.Unit
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+
+
+<div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">@ViewBag.Title</h3>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewBag.Title</a></li>
+            <li class="breadcrumb-item active">Data Unit</li>
+        </ol>
+    </div>
+    <div class="col-md-6 col-4 align-self-center">
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">No.</label>
+                            <div class="col-md-5">
+                                @Html.DisplayFor(model => model.Idunit)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Merk</label>
+                            <div class="col-md-5">
+                                @Html.DisplayFor(model => model.NamaKategori.Nama_kategori)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Nama Unit</label>
+                            <div class="col-md-5">
+                                @Html.DisplayFor(model => model.Namabarang)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Harga</label>
+                            <div class="col-md-5">
+                                Rp. @Html.DisplayFor(model => model.Harga)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Stok</label>
+                            <div class="col-md-3">
+                                @Html.DisplayFor(model => model.Stok) Unit
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Dibuat</label>
+                            <div class="col-md-10">
+                                @Html.DisplayFor(model => model.Created)
+                            </div>
+                        </div>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = Model.IdApprove }, new { @class = "btn btn-warning" })*@
+                        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-warning" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

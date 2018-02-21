@@ -1,0 +1,150 @@
+﻿@model IEnumerable<kredit.Models.Category>
+
+@{
+    ViewBag.Title = "Merk Motor";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+    int i = 0;
+}
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+}
+<div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">@ViewBag.Title</h3>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewBag.Title</a></li>
+            <li class="breadcrumb-item active">Data Merk</li>
+        </ol>
+    </div>
+    <div class="col-md-6 col-4 align-self-center">
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Data Export</h4>
+                <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
+                @Html.ActionLink("Create New", "Create", "Categories", null, new { @class = "btn btn-success" })
+                <div class="table-responsive m-t-40" style="margin-top:5px;">
+                    <table id="table" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Merk</th>
+                                <th>Created</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>Merk</th>
+                                <th>Created</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                i++;
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Nama_kategori)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.Idkategori }, new { @class = "btn btn-warning" })
+                                        @Html.ActionLink("Details", "Details", new { id = item.Idkategori }, new { @class = "btn btn-primary" })
+                                        <a href="#" class="btn btn-danger" onclick="deleteed('@item.Idkategori')">Deleted</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="~/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Readmore.js/2.2.0/readmore.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script>
+        function deleteed(apa)
+        {
+            swal({
+                title: 'Yakin Di Hapus?',
+                text: 'Kategori yang dihapus tidak akan tampil di halaman utama',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Tidak , Batal Hapus',
+                confirmButtonClass: 'confirm-class',
+                cancelButtonClass: 'cancel-class',
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    swal(
+                        'Dihapus :(',
+                        'Kategori Berhasil Di Hapus',
+                        'success'
+                        ),
+                     hapus(apa);
+                } else {
+                    swal(
+                        'Batal :)',
+                        'Kategori Batal Di Hapus',
+                        'error'
+                    );
+                }
+            });
+        }
+
+        function hapus(apa) {
+            console.log("Document Ready");
+            var data = {
+                'id': apa //permalink
+            };
+            $.ajax({
+                type: "POST",
+                data: data,
+                url: "@Url.Action("DeleteConfirmed", "Categories")",
+                beforeSend: function () {                    
+                    console.log("before Send");
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (request, status, error) {
+                    //to do
+                },
+                complete: function () {
+                    console.log("Selesai");
+                }
+            });
+        }
+
+        $('#table').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    </script>
+}

@@ -1,0 +1,110 @@
+﻿@model kredit.Models.Permohonan
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+@section Styles{
+    <link href="~/assets/plugins/lightbox2/dist/css/lightbox.css" rel="stylesheet" />
+}
+<div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">@ViewBag.Title</h3>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewBag.Title</a></li>
+            <li class="breadcrumb-item active">Data Permohonan</li>
+        </ol>
+    </div>
+    <div class="col-md-6 col-4 align-self-center">
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Nama</label>
+                            <div class="col-md-5">
+                                @Html.DisplayFor(model => model.CreatedBy.UserName)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">No. KTP</label>
+                            <div class="col-md-5">
+                                @Html.DisplayFor(model => model.CreatedBy.noktp)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">No. KK</label>
+                            <div class="col-md-5">
+                                @Html.DisplayFor(model => model.CreatedBy.nokk)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Alamat</label>
+                            <div class="col-md-5">
+                                @Html.DisplayFor(model => model.CreatedBy.alamat)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Email</label>
+                            <div class="col-md-5">
+                                @Html.DisplayFor(model => model.CreatedBy.Email)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Dibuat</label>
+                            <div class="col-md-10">
+                                @Html.DisplayFor(model => model.Created)
+                            </div>
+                        </div>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = Model.IdApprove }, new { @class = "btn btn-warning" })*@
+                        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-warning" })
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Status</label>
+                            <div class="col-md-3">
+                                <h1 class="btn btn-info" style="margin-top:-5px;"><b>@Html.DisplayFor(model => model.status)</b></h1>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Syarat Umum</label>
+                            <div class="col-md-4">
+                                <a href="@Html.DisplayFor(model => model.ktpimg)" data-lightbox="@Html.DisplayFor(model => model.ktpimg)" data-title="Scan KTP">
+                                    <img src="@Html.DisplayFor(model => model.ktpimg)" class="img-thumbnail img-responsive" />
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="@Html.DisplayFor(model => model.kkimg)" data-lightbox="@Html.DisplayFor(model => model.kkimg)" data-title="Scan KK">
+                                    <img src="@Html.DisplayFor(model => model.kkimg)" class="img-thumbnail img-responsive" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2"></label>
+                            <div class="col-md-4">
+                                <a href="@Html.DisplayFor(model => model.skkerjaimg)" data-lightbox="@Html.DisplayFor(model => model.skkerjaimg)" data-title="Scan SK Kerja">
+                                    <img src="@Html.DisplayFor(model => model.skkerjaimg)" class="img-thumbnail img-responsive" alt="Scan SK Kerja" />
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="@Html.DisplayFor(model => model.tagihanlistrikimg)" data-lightbox="@Html.DisplayFor(model => model.tagihanlistrikimg)" data-title="Scan Tagihan Listrik">
+                                    <img src="@Html.DisplayFor(model => model.tagihanlistrikimg)" class="img-thumbnail img-responsive" alt="Scan Tagihan Listrik" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/assets/plugins/lightbox2/dist/js/lightbox-plus-jquery.js"></script>
+}

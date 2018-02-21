@@ -1,0 +1,150 @@
+﻿@model IEnumerable<kredit.Models.KreditDetail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+    int i = 0;
+}
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+}
+<div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">@ViewBag.Title</h3>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewBag.Title</a></li>
+            <li class="breadcrumb-item active">Data Kredit Motor</li>
+        </ol>
+    </div>
+    <div class="col-md-6 col-4 align-self-center">
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Data Export</h4>
+                <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
+                <a href="@Url.Action("Create", "KreditDetails")" class="btn btn-success" id="tambah">Create New</a>
+                <div class="table-responsive m-t-40" style="margin-top:5px;">
+                    <table id="table" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kode</th>
+                                <th>Uang Muka</th>
+                                <th>Jumlah Pinjam</th>
+                                <th>Angsuran Bulanan</th>
+                                <th>Periode</th>
+                                <th>Created</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>No</th>
+                                <th>Kode</th>
+                                <th>Uang Muka</th>
+                                <th>Jumlah Pinjam</th>
+                                <th>Angsuran Bulanan</th>
+                                <th>Periode</th>
+                                <th>Created</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                i++;
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Permohonan.Kode)</td>
+                                    <td>Rp. @Html.DisplayFor(modelItem => item.DP)</td>
+                                    <td>Rp. @Html.DisplayFor(modelItem => item.JumlahPinjam)</td>
+                                    <td>Rp. @Html.DisplayFor(modelItem => item.Angsuran)</td>
+                                    <td>
+                                        @if(item.Periode == 12)
+                                        {
+                                            <span>1 Tahun</span>
+                                        }
+                                        else if (item.Periode == 24)
+                                        {
+                                            <span>2 Tahun</span>
+                                        }
+                                        else if (item.Periode == 36)
+                                        {
+                                            <span>3 Tahun</span>
+                                        }
+                                        else
+                                        {
+                                            <span>4 Tahun</span>
+                                        }
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.Created)</td>
+                                    <td>
+                                        @Html.ActionLink("Details", "Details", new { id = item.IdKreditDetail }, new { @class = "btn btn-primary" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="~/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert-dev.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            getIdApprove();
+        });
+        $('#table').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+        function getIdApprove()
+        {
+            console.log("Document Ready");
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("GetIdApprove", "KreditDetails")",
+                    beforeSend: function () {
+                        console.log("before Send");
+                    },
+                success: function (response) {
+                    console.log(response);
+                    var idku = $('#IdApprove').val(response[0]);
+                    if (response.length == 0)
+                    {
+                        $('#tambah').click(function (e) {
+                            e.preventDefault();
+                            swal("Upps!", "Tidak bisa membuat permohonan karena permohonan kredit tidak valid", "error");
+                        });
+                    }
+                },
+                error: function (request, status, error) {
+                    //to do
+                },
+                complete: function () {
+                    console.log("Selesai");
+                }
+            });
+        }
+</script> 
+}

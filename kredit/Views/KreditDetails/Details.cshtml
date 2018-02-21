@@ -1,0 +1,135 @@
+﻿@model kredit.Models.KreditDetail
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+
+<div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">@ViewBag.Title</h3>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">@ViewBag.Title</a></li>
+            <li class="breadcrumb-item active">Data Permohonan</li>
+        </ol>
+    </div>
+    <div class="col-md-6 col-4 align-self-center">
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">No.</label>
+                            <div class="col-md-10">
+                                @Html.DisplayFor(model => model.IdKreditDetail)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">DP</label>
+                            <div class="col-md-5">
+                                Rp. @Html.DisplayFor(model => model.DP)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Jumlah Pinjam</label>
+                            <div class="col-md-5">
+                               Rp. @Html.DisplayFor(model => model.JumlahPinjam)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Angsuran</label>
+                            <div class="col-md-5">
+                                Rp. @Html.DisplayFor(model => model.Angsuran)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Periode</label>
+                            <div class="col-md-5">
+                                @if (Model.Periode == 12)
+                                {
+                                    <span>1 Tahun</span>
+                                }
+                                else if (Model.Periode == 24)
+                                {
+                                    <span>2 Tahun</span>
+                                }
+                                else if (Model.Periode == 36)
+                                {
+                                    <span>3 Tahun</span>
+                                }
+                                else
+                                {
+                                    <span>4 Tahun</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Dibuat</label>
+                            <div class="col-md-10">
+                                @Html.DisplayFor(model => model.Created)
+                            </div>
+                        </div>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = Model.IdApprove }, new { @class = "btn btn-warning" })*@
+                        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-warning" })
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Merk</label>
+                            <div class="col-md-3">
+                                <h1 class="btn btn-info" style="margin-top:-5px;"><b>@Html.DisplayFor(model => model.Unit.NamaKategori.Nama_kategori)</b></h1>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Nama Unit</label>
+                            <div class="col-md-4">
+                                @Html.DisplayFor(model => model.Unit.Namabarang)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2">Jumlah Unit</label>
+                            <div class="col-md-4">
+                                @Html.DisplayFor(model => model.Jumlah)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            getIdApprove();
+        });
+        function getIdApprove()
+        {
+            console.log("Document Ready");
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("GetIdApprove", "KreditDetails")",
+                    beforeSend: function () {
+                        console.log("before Send");
+                    },
+                success: function (response) {
+                    console.log(response);
+                    var idku = $('#kode').val(response[1]);
+                },
+                error: function (request, status, error) {
+                    //to do
+                },
+                complete: function () {
+                    console.log("Selesai");
+                }
+            });
+        }
+    </script>
+}
